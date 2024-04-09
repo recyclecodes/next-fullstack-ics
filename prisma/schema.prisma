@@ -9,6 +9,109 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "mysql"
   url      = env("DATABASE_URL")
+}
+
+
+model Company {
+  id               String     @id @default(cuid())
+  name             String     @unique
+  users            User[]     @relation("CompanyToUser") 
+  isArchived       Boolean    @default(false)
+  createdAt        DateTime   @default(now())
+  updatedAt        DateTime   @updatedAt
+  senderCompany    Transfer[] @relation("TransferFromCompany")
+  recipientCompany Transfer[] @relation("TransferToCompany")
+}
+
+model User {
+  id                String     @id @default(cuid())
+  name              String?
+  dateOfBirth       DateTime?
+  imageUrl          String?
+  contact           String?
+  address           String?
+  email             String     @unique
+  password          String?
+  companyId         String
+  role              Role       @default(USER)
+  company           Company    @relation("CompanyToUser", fields: [companyId], references: [id], onDelete: Cascade)
+  items             Item[]     @relation("UserToItem")
+  isArchived        Boolean    @default(false)
+  emailVerified     DateTime?
+  createdAt         DateTime   @default(now())
+  updatedAt         DateTime   @updatedAt
+  accounts          Account[]  @relation("UserToAccount")
+  senderTransfer    Transfer[] @relation("TransferFromSender")
+  recipientTransfer Transfer[] @relation("TransferToUser")
+  adminTransfer     Transfer[] @relation("TransferApprovedByAdmin")
+}
+
+enum Role {
+  SUPER_ADMIN
+  ADMIN
+  USER
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+
+  user User @relation("UserToAccount", fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Item {
+  id          String    @id @default(cuid())
+  name        String
+  description String?
+  brand       String?
+  price       Float?
+  quantity    Int?
+  imageUrl    String?
+  userId      String?
+  user        User?     @relation("UserToItem", fields: [userId], references: [id], onDelete: Cascade)
+  transferId  String?
+  transfer    Transfer? @relation("ItemInTransfer", fields: [transferId], references: [id])
+  isArchived  Boolean   @default(false)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+}
+
+model Transfer {
+  id                 String         @id @default(cuid())
+  senderId           String
+  sender             User           @relation("TransferFromSender", fields: [senderId], references: [id])
+  recipientId        String
+  recipient          User           @relation("TransferToUser", fields: [recipientId], references: [id])
+  adminId            String
+  admin              User           @relation("TransferApprovedByAdmin", fields: [adminId], references: [id])
+  senderCompanyId    String
+  senderCompany      Company        @relation("TransferFromCompany", fields: [senderCompanyId], references: [id])
+  recipientCompanyId String
+  recipientCompany   Company        @relation("TransferToCompany", fields: [recipientCompanyId], references: [id])
+  items              Item[]         @relation("ItemInTransfer")
+  status             TransferStatus
+  createdAt          DateTime       @default(now())
+  updatedAt          DateTime       @updatedAt
+}
+
+enum TransferStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  ACCEPTED
 }

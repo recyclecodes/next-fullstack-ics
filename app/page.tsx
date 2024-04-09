@@ -1,3 +1,4 @@
+import prismadb from "@/lib/prismadb";
 import Image from "next/image";
 
 export default function Home() {
