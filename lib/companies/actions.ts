@@ -2,8 +2,8 @@
 
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
-import { companySchema } from '@/lib/zod';
 import prismadb from '@/lib/prismadb';
+import { companySchema } from '../zod';
 
 type State = {
   errors?: {
@@ -53,11 +53,12 @@ export async function createCompany(formData: FormData): Promise<State> {
 }
 
 export async function updateCompany(
-  id: string,
+  id: string | undefined,
   formData: FormData
 ): Promise<State> {
 
   const validatedFields = companySchema.safeParse({
+    id: formData.get('id'),
     name: formData.get('name'),
     imageUrl: formData.get('imageUrl'),
   });
@@ -93,3 +94,4 @@ export async function updateCompany(
    // Redirect the user to the companies page
    redirect('/companies');
 }
+

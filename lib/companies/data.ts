@@ -12,7 +12,7 @@ export async function fetchLatestCompanies() {
     return companies.map((company) => ({
       id: company.id,
       name: company.name,
-      imageUrl: company.imageUrl || `https://avatar.vercel.sh/acme.png`,
+      imageUrl: company.imageUrl || null,
       createdAt: company.createdAt,
     }));
   } catch (error) {
@@ -22,42 +22,65 @@ export async function fetchLatestCompanies() {
 }
 
 const ITEMS_PER_PAGE = 6;
-export async function fetchFilteredCompanies(query: string, currentPage: number) {
-    const offset = (currentPage - 1) * ITEMS_PER_PAGE;
-  
-    try {
-      const companies = await prismadb.company.findMany({
-        where: {
-          OR: [
-            { name: { contains: query } },
-          ],
-        },
-        orderBy: { createdAt: 'desc' },
-        take: ITEMS_PER_PAGE,
-        skip: offset,
-      });
-  
-      return companies;
-    } catch (error) {
-      console.error('Database Error:', error);
-      throw new Error('Failed to fetch companies.');
-    }
-  }
+export async function fetchFilteredCompanies(
+  query: string,
+  currentPage: number
+) {
+  noStore();
+  const offset = (currentPage - 1) * ITEMS_PER_PAGE;
 
-  export async function fetchCompanyPages(query: string): Promise<number> {
-    try {
-        const count = await prismadb.company.count({
-            where: {
-                OR: [
-                    { name: { contains: query } },
-                ]
-            }
-        });
+  try {
+    const companies = await prismadb.company.findMany({
+      where: {
+        OR: [{ name: { contains: query } }],
+      },
+      orderBy: { createdAt: 'desc' },
+      take: ITEMS_PER_PAGE,
+      skip: offset,
+    });
 
-        const totalPages = Math.ceil(count/ITEMS_PER_PAGE);
-        return totalPages;
-    } catch (error) {
-        console.log('Database Error', error);
-        throw new Error('Failed to fetch total number of companies.');
-    }
+    return companies;
+  } catch (error) {
+    console.error('Database Error:', error);
+    throw new Error('Failed to fetch companies.');
   }
+}
+
+export async function fetchCompanyPages(query: string): Promise<number> {
+  noStore();
+  try {
+    const count = await prismadb.company.count({
+      where: {
+        OR: [{ name: { contains: query } }],
+      },
+    });
+
+    const totalPages = Math.ceil(count / ITEMS_PER_PAGE);
+    return totalPages;
+  } catch (error) {
+    console.log('Database Error', error);
+    throw new Error('Failed to fetch total number of companies.');
+  }
+}
+
+export async function fetchCompanyById(id: string) {
+  try {
+    const company = await prismadb.company.findUnique({
+      where: { id: id },
+    });
+
+    if (!company) {
+      throw new Error('Company not found.');
+    }
+
+    return {
+      id: company.id,
+      name: company.name,
+      imageUrl: company.imageUrl || null,
+      createdAt: company.createdAt,
+    };
+  } catch (error) {
+    console.error('[COMPANY_GET_BY_ID]', error);
+    throw new Error('Failed to fetch the company by ID.');
+  }
+}

@@ -4,9 +4,9 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 
 import { CompanyForms, companySchema } from '@/lib/zod';
-
-import { createCompany } from '@/lib/companies/actions';
+import { updateCompany } from '@/lib/companies/actions';
 import { useToast } from '@/components/ui/use-toast';
+
 import {
   Form,
   FormControl,
@@ -20,13 +20,18 @@ import { Input } from '@/components/ui/input';
 import Link from 'next/link';
 import LoadingButton from '@/components/LoadingButton';
 
-
-export default function CreateCompanyForm() {
-  const form = useForm<CompanyForms>({ resolver: zodResolver(companySchema) });
+export default function EditCompanyForm({
+  company,
+}: {
+  company: CompanyForms;
+}) {
+  const form = useForm<CompanyForms>({
+    resolver: zodResolver(companySchema),
+    defaultValues: company,
+  });
 
   const {
     handleSubmit,
-    control,
     formState: { isSubmitting },
   } = form;
 
@@ -43,11 +48,7 @@ export default function CreateCompanyForm() {
     });
 
     try {
-      await createCompany(formData);
-      toast({
-        variant: 'default',
-        description: 'Successfully added new company',
-      });
+      await updateCompany(company.id, formData);
     } catch (error) {
       console.error('An error occurred:', error);
       toast({
@@ -62,7 +63,7 @@ export default function CreateCompanyForm() {
       <Form {...form}>
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-8 w-full">
           <FormField
-            control={control}
+            control={form.control}
             name="imageUrl"
             render={({ field }) => (
               <FormItem>
@@ -80,7 +81,7 @@ export default function CreateCompanyForm() {
           />
           <div className="md:grid md:grid-cols-3 gap-8">
             <FormField
-              control={control}
+              control={form.control}
               name="name"
               render={({ field }) => (
                 <FormItem>
@@ -113,4 +114,3 @@ export default function CreateCompanyForm() {
     </>
   );
 }
-
