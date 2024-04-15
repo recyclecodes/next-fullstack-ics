@@ -1,6 +1,6 @@
 import { fetchFilteredCompanies } from '@/lib/companies/data';
 import Image from 'next/image';
-
+import { UpdateCompany } from './buttons';
 
 export default async function CompanyTable({
   query,
@@ -25,7 +25,7 @@ export default async function CompanyTable({
                   <div>
                     <div className="mb-2 flex items-center">
                       <Image
-                        src={company.imageUrl ?? '/fallback-image.jpg'}
+                        src={company.imageUrl ?? '/fallback/01.png'}
                         className="mr-2 rounded-full"
                         width={28}
                         height={28}
@@ -44,8 +44,8 @@ export default async function CompanyTable({
                     <p>{formatDateToLocal(company.date)}</p>
                   </div> */}
                   <div className="flex justify-end gap-2">
-                    {/* <Updatecompany id={company.id} />
-                    <Deletecompany id={company.id} /> */}
+                    <UpdateCompany id={company.id} />
+                    {/* <Deletecompany id={company.id} /> */}
                   </div>
                 </div>
               </div>
@@ -58,7 +58,7 @@ export default async function CompanyTable({
                   Id
                 </th>
                 <th scope="col" className="px-3 py-5 font-medium">
-                 Company
+                  Company
                 </th>
                 <th scope="col" className="relative py-3 pl-6 pr-3">
                   <span className="sr-only">Edit</span>
@@ -71,13 +71,11 @@ export default async function CompanyTable({
                   key={company.id}
                   className="w-full border-b py-3 text-sm last-of-type:border-none [&:first-child>td:first-child]:rounded-tl-lg [&:first-child>td:last-child]:rounded-tr-lg [&:last-child>td:first-child]:rounded-bl-lg [&:last-child>td:last-child]:rounded-br-lg"
                 >
-                    <td className="whitespace-nowrap px-3 py-3">
-                    {company.id}
-                  </td>
+                  <td className="whitespace-nowrap px-3 py-3">{company.id}</td>
                   <td className="whitespace-nowrap py-3 pl-6 pr-3">
                     <div className="flex items-center gap-3">
                       <Image
-                        src={company.imageUrl ?? '/fallback-image.jpg'}
+                        src={company.imageUrl ?? '/fallback/01.png'}
                         className="rounded-full"
                         width={28}
                         height={28}
@@ -86,7 +84,7 @@ export default async function CompanyTable({
                       <p>{company.name}</p>
                     </div>
                   </td>
-                  
+
                   {/* <td className="whitespace-nowrap px-3 py-3">
                     {company.}
                   </td>
@@ -98,8 +96,8 @@ export default async function CompanyTable({
                   </td> */}
                   <td className="whitespace-nowrap py-3 pl-6 pr-3">
                     <div className="flex justify-end gap-3">
-                      {/* <Updatecompany id={company.id} />
-                      <Deletecompany id={company.id} /> */}
+                      <UpdateCompany id={company.id} />
+                      {/* <Deletecompany id={company.id} /> */}
                     </div>
                   </td>
                 </tr>

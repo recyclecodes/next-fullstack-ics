@@ -1,5 +1,5 @@
 import Breadcrumbs from '@/app/ui/companies/breadcrumbs';
-import Form from '@/app/ui/companies/create-form';
+import CompanyForm from '@/app/ui/companies/create-form';
 
 export default async function Page() {
   return (
@@ -14,7 +14,7 @@ export default async function Page() {
           },
         ]}
       />
-      <Form />
+      <CompanyForm />
     </main>
   );
 }
