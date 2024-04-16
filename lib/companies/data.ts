@@ -31,9 +31,7 @@ export async function fetchFilteredCompanies(
 
   try {
     const companies = await prismadb.company.findMany({
-      where: {
-        OR: [{ name: { contains: query } }],
-      },
+      where: { deleted: false, OR: [{ name: { contains: query } }] },
       orderBy: { createdAt: 'desc' },
       take: ITEMS_PER_PAGE,
       skip: offset,

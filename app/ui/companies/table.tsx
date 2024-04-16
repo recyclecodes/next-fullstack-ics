@@ -1,6 +1,6 @@
 import { fetchFilteredCompanies } from '@/lib/companies/data';
 import Image from 'next/image';
-import { UpdateCompany } from './buttons';
+import { DeleteCompany, UpdateCompany } from './buttons';
 
 export default async function CompanyTable({
   query,
@@ -45,7 +45,7 @@ export default async function CompanyTable({
                   </div> */}
                   <div className="flex justify-end gap-2">
                     <UpdateCompany id={company.id} />
-                    {/* <Deletecompany id={company.id} /> */}
+                    <DeleteCompany id={company.id} />
                   </div>
                 </div>
               </div>
@@ -97,7 +97,7 @@ export default async function CompanyTable({
                   <td className="whitespace-nowrap py-3 pl-6 pr-3">
                     <div className="flex justify-end gap-3">
                       <UpdateCompany id={company.id} />
-                      {/* <Deletecompany id={company.id} /> */}
+                      <DeleteCompany id={company.id} />
                     </div>
                   </td>
                 </tr>

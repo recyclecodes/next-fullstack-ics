@@ -46,9 +46,8 @@ export async function createCompany(formData: FormData): Promise<State> {
     };
   }
 
-  // Revalidate the cache for the companies page
   revalidatePath('/companies');
-  // Redirect the user to the companies page
+
   redirect('/companies');
 }
 
@@ -56,7 +55,6 @@ export async function updateCompany(
   id: string | undefined,
   formData: FormData
 ): Promise<State> {
-
   const validatedFields = companySchema.safeParse({
     id: formData.get('id'),
     name: formData.get('name'),
@@ -75,7 +73,7 @@ export async function updateCompany(
   try {
     console.log('Updating company with name:', name, 'and imageUrl:', imageUrl);
     await prismadb.company.update({
-      where: { id }, 
+      where: { id },
       data: {
         name,
         imageUrl,
@@ -89,9 +87,17 @@ export async function updateCompany(
       message: 'Database Error: Failed to Update Company.',
     };
   }
-   // Revalidate the cache for the companies page
-   revalidatePath('/companies');
-   // Redirect the user to the companies page
-   redirect('/companies');
+
+  revalidatePath('/companies');
+
+  redirect('/companies');
 }
 
+export async function deleteCompany(id: string | undefined) {
+  try {
+    await prismadb.company.delete({ where: { id } });
+    revalidatePath('/companies');
+  } catch (error) {
+    return { message: 'Database Error: Failed to Delete Company.' };
+  }
+}
