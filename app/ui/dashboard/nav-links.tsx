@@ -2,7 +2,10 @@
 
 import {
   HomeIcon,
-  DocumentDuplicateIcon,
+  BuildingOffice2Icon,
+  UsersIcon,
+  ArchiveBoxXMarkIcon,
+  DeviceTabletIcon,
 } from '@heroicons/react/24/outline';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
@@ -15,10 +18,12 @@ const links = [
   {
     name: 'Companies',
     href: '/companies',
-    icon: DocumentDuplicateIcon,
+    icon: BuildingOffice2Icon,
   },
-  { name: 'Users', href: '/users', icon: DocumentDuplicateIcon },
-  { name: 'Items', href: '/items', icon: DocumentDuplicateIcon },
+  { name: 'Users', href: '/users', icon: UsersIcon },
+  { name: 'Items', href: '/items', icon: DeviceTabletIcon },
+  { name: 'Archive', href: '/archive', icon: ArchiveBoxXMarkIcon },
+
 ];
 
 export default function NavLinks() {
@@ -32,10 +37,10 @@ export default function NavLinks() {
             key={link.name}
             href={link.href}
             className={clsx(
-              'flex h-[48px] grow items-center justify-center gap-2 rounded-md bg-gray-50 p-3 text-sm font-medium hover:bg-sky-100 hover:text-blue-600 md:flex-none md:justify-start md:p-2 md:px-3',
+              'flex h-[48px] grow items-center justify-center gap-2 rounded-md bg-gray-50 p-3 text-sm font-medium hover:bg-primary/10 hover:text-primary-background md:flex-none md:justify-start md:p-2 md:px-3',
               {
-                'bg-sky-100 text-blue-600': pathname === link.href,
-              },
+                'bg-primary/0 text-primary-background ': pathname === link.href,
+              }
             )}
           >
             <LinkIcon className="w-6" />

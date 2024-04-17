@@ -1,6 +1,7 @@
 import { fetchFilteredCompanies } from '@/lib/companies/data';
 import Image from 'next/image';
 import { DeleteCompany, UpdateCompany } from './buttons';
+import { formatDateToLocal } from '@/lib/utils';
 
 export default async function CompanyTable({
   query,
@@ -33,16 +34,16 @@ export default async function CompanyTable({
                       />
                       <p>{company.name}</p>
                     </div>
-                    <p className="text-sm text-gray-500">{company.id}</p>
+                    <p className="text-xs text-gray-500">{company.id}</p>
                   </div>
                 </div>
                 <div className="flex w-full items-center justify-between pt-4">
-                  {/* <div>
-                    <p className="text-xl font-medium">
-                      {formatCurrency(company.amount)}
+                  <div>
+                    <p className="text-sm font-medium">
+                      Date added:
                     </p>
-                    <p>{formatDateToLocal(company.date)}</p>
-                  </div> */}
+                    <p className='text-base font-medium'>{formatDateToLocal(company.createdAt.toISOString())}</p>
+                  </div>
                   <div className="flex justify-end gap-2">
                     <UpdateCompany id={company.id} />
                     <DeleteCompany id={company.id} />
@@ -61,7 +62,7 @@ export default async function CompanyTable({
                   Company
                 </th>
                 <th scope="col" className="relative py-3 pl-6 pr-3">
-                  <span className="sr-only">Edit</span>
+                  <span className="sr-only">Actions</span>
                 </th>
               </tr>
             </thead>
@@ -88,9 +89,7 @@ export default async function CompanyTable({
                   {/* <td className="whitespace-nowrap px-3 py-3">
                     {company.}
                   </td>
-                  <td className="whitespace-nowrap px-3 py-3">
-                    {formatDateToLocal(company.date)}
-                  </td>
+                  
                   <td className="whitespace-nowrap px-3 py-3">
                     <companiestatus status={company.status} />
                   </td> */}

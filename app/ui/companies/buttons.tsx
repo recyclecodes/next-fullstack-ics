@@ -1,5 +1,8 @@
+'use client';
+
 import { Icons } from '@/components/icons';
 import { Button } from '@/components/ui/button';
+import { useToast } from '@/components/ui/use-toast';
 import { deleteCompany } from '@/lib/companies/actions';
 import Link from 'next/link';
 
@@ -17,7 +20,7 @@ export function CreateCompany() {
 export function UpdateCompany({ id }: { id: string }) {
   return (
     <Link href={`/companies/${id}/edit`}>
-      <Button className="hover:bg-gray-100 hover:text-gray-900">
+      <Button>
         <span className="sr-only">Update</span>
         <Icons.pencil className="w-5" />
       </Button>
@@ -26,10 +29,26 @@ export function UpdateCompany({ id }: { id: string }) {
 }
 
 export function DeleteCompany({ id }: { id: string }) {
-  const removeCompany = deleteCompany.bind(null, id);
+  const { toast } = useToast();
+
+  const removeCompany = async () => {
+    try {
+      await deleteCompany(id);
+      toast({
+        variant: 'default',
+        description: `Successfully deleted company with ID ${id}`,
+      });
+    } catch (error) {
+      console.error('An error occurred while deleting the company:', error);
+      toast({
+        variant: 'destructive',
+        description: `Error deleting the company with ID ${id}`,
+      });
+    }
+  };
   return (
     <form action={removeCompany}>
-      <Button className="hover:bg-gray-100 hover:text-gray-900">
+      <Button>
         <span className="sr-only">Delete</span>
         <Icons.trash className="w-5" />
       </Button>

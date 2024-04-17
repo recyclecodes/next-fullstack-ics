@@ -1,4 +1,4 @@
-import Breadcrumbs from '@/app/ui/companies/breadcrumbs';
+import Breadcrumbs from '@/components/breadcrumbs';
 import CreateCompanyForm from '@/app/ui/companies/create-form';
 
 

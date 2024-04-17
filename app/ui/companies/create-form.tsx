@@ -33,7 +33,6 @@ export default function CreateCompanyForm() {
   const { toast } = useToast();
 
   async function onSubmit(values: CompanyForms) {
-    console.log('Submitting form with values:', values);
     const formData = new FormData();
 
     Object.entries(values).forEach(([key, value]) => {

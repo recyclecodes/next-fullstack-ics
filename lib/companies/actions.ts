@@ -96,8 +96,8 @@ export async function updateCompany(
 export async function deleteCompany(id: string | undefined) {
   try {
     await prismadb.company.delete({ where: { id } });
-    revalidatePath('/companies');
   } catch (error) {
     return { message: 'Database Error: Failed to Delete Company.' };
   }
+  revalidatePath('/companies');
 }

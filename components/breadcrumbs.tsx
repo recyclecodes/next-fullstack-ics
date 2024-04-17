@@ -1,4 +1,4 @@
-import { lusitana } from '@/components/fonts';
+import { inter } from '@/components/fonts';
 import { clsx } from 'clsx';
 import Link from 'next/link';
 
@@ -16,7 +16,7 @@ export default function Breadcrumbs({
 }) {
   return (
     <nav aria-label="Breadcrumb" className="mb-6 block">
-      <ol className={clsx(lusitana.className, 'flex text-xl md:text-2xl')}>
+      <ol className={clsx(inter.className, 'flex text-xl md:text-base')}>
         {breadcrumbs.map((breadcrumb, index) => (
           <li
             key={breadcrumb.href}

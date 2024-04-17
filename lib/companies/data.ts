@@ -48,9 +48,44 @@ export async function fetchCompanyPages(query: string): Promise<number> {
   noStore();
   try {
     const count = await prismadb.company.count({
-      where: {
-        OR: [{ name: { contains: query } }],
-      },
+      where: { deleted: false, OR: [{ name: { contains: query } }] },
+    });
+
+    const totalPages = Math.ceil(count / ITEMS_PER_PAGE);
+    return totalPages;
+  } catch (error) {
+    console.log('Database Error', error);
+    throw new Error('Failed to fetch total number of companies.');
+  }
+}
+
+export async function fetchArchivedCompanies(
+  query: string,
+  currentPage: number
+) {
+  noStore();
+  const offset = (currentPage - 1) * ITEMS_PER_PAGE;
+
+  try {
+    const companies = await prismadb.company.findMany({
+      where: { deleted: true, OR: [{ name: { contains: query } }] },
+      orderBy: { createdAt: 'desc' },
+      take: ITEMS_PER_PAGE,
+      skip: offset,
+    });
+
+    return companies;
+  } catch (error) {
+    console.error('Database Error:', error);
+    throw new Error('Failed to fetch companies.');
+  }
+}
+
+export async function fetchArchivedCompanyPages(query: string): Promise<number> {
+  noStore();
+  try {
+    const count = await prismadb.company.count({
+      where: { deleted: true, OR: [{ name: { contains: query } }] },
     });
 
     const totalPages = Math.ceil(count / ITEMS_PER_PAGE);

@@ -38,7 +38,6 @@ export default function EditCompanyForm({
   const { toast } = useToast();
 
   async function onSubmit(values: CompanyForms) {
-    console.log('Submitting form with values:', values);
     const formData = new FormData();
 
     Object.entries(values).forEach(([key, value]) => {
@@ -49,6 +48,10 @@ export default function EditCompanyForm({
 
     try {
       await updateCompany(company.id, formData);
+      toast({
+        variant: 'default',
+        description: `Successfully updated ${company.name}`,
+      });
     } catch (error) {
       console.error('An error occurred:', error);
       toast({
