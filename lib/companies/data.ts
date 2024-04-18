@@ -10,10 +10,7 @@ export async function fetchLatestCompanies() {
     });
 
     return companies.map((company) => ({
-      id: company.id,
-      name: company.name,
-      imageUrl: company.imageUrl || null,
-      createdAt: company.createdAt,
+      ...company
     }));
   } catch (error) {
     console.log('[COMPANIES_GET]', error);

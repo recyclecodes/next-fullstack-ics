@@ -77,7 +77,6 @@ export default function CreateCompanyForm() {
               </FormItem>
             )}
           />
-          <div className="md:grid md:grid-cols-3 gap-8">
             <FormField
               control={control}
               name="name"
@@ -95,7 +94,7 @@ export default function CreateCompanyForm() {
                 </FormItem>
               )}
             />
-          </div>
+  
           <div className="mt-6 flex justify-end gap-4">
             <Link
               href="/companies"

@@ -1,5 +1,5 @@
 import { CreateCompany } from '@/app/ui/companies/buttons';
-import Table from '@/app/ui/companies/table';
+import CompaniesTable from '@/app/ui/companies/table';
 import Search from '@/app/ui/search';
 import { inter } from '@/components/fonts';
 import Pagination from '@/components/pagination';
@@ -35,7 +35,7 @@ export default async function Page({
         <CreateCompany />
       </div>
       <Suspense key={query + currentPage} fallback={<CompaniesTableSkeleton />}>
-        <Table query={query} currentPage={currentPage} />
+        <CompaniesTable query={query} currentPage={currentPage} />
       </Suspense>
       <div className="mt-5 flex w-full justify-center">
         <Pagination totalPages={totalPages} />
