@@ -101,3 +101,16 @@ export async function deleteCompany(id: string | undefined) {
   }
   revalidatePath('/companies');
 }
+
+export async function restoreCompany(id: string | undefined) {
+  try {
+    await prismadb.company.update({
+      where: { id },
+      data: { deleted: false },
+    });
+  } catch (error) {
+    console.error(error);
+    return { message: 'Database Error: Failed to restore company.' };
+  }
+  revalidatePath('/archive');
+}

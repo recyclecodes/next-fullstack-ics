@@ -1,16 +1,17 @@
-import { fetchFilteredCompanies } from '@/lib/companies/data';
+import { fetchFilteredArchiveCompanies, fetchFilteredCompanies } from '@/lib/companies/data';
 import Image from 'next/image';
-import { DeleteCompany, UpdateCompany, ViewCompany } from './buttons';
+// import { DeleteCompany, UpdateCompany } from './buttons';
 import { formatDateToLocal } from '@/lib/utils';
+import { RestoreCompany } from '../companies/buttons';
 
-export default async function CompaniesTable({
+export default async function ArchivedCompaniesTable({
   query,
   currentPage,
 }: {
   query: string;
   currentPage: number;
 }) {
-  const companies = await fetchFilteredCompanies(query, currentPage);
+  const companies = await fetchFilteredArchiveCompanies(query, currentPage);
 
   return (
     <div className="mt-6 flow-root">
@@ -39,15 +40,14 @@ export default async function CompaniesTable({
                 </div>
                 <div className="flex w-full items-center justify-between pt-4">
                   <div>
-                    <p className="text-sm font-medium">Date added:</p>
-                    <p className="text-base font-medium">
-                      {formatDateToLocal(company.createdAt.toISOString())}
+                    <p className="text-sm font-medium">
+                      Date added:
                     </p>
+                    <p className='text-base font-medium'>{formatDateToLocal(company.createdAt.toISOString())}</p>
                   </div>
                   <div className="flex justify-end gap-2">
-                    <UpdateCompany id={company.id} />
-                    <DeleteCompany id={company.id} />
-                    <ViewCompany id={company.id} />
+                    {/* <UpdateCompany id={company.id} /> */}
+                    <RestoreCompany id={company.id} />
                   </div>
                 </div>
               </div>
@@ -96,9 +96,8 @@ export default async function CompaniesTable({
                   </td> */}
                   <td className="whitespace-nowrap py-3 pl-6 pr-3">
                     <div className="flex justify-end gap-3">
-                      <UpdateCompany id={company.id} />
-                      <DeleteCompany id={company.id} />
-                      <ViewCompany id={company.id} />
+                      {/* <UpdateCompany id={company.id} /> */}
+                      <RestoreCompany id={company.id} />
                     </div>
                   </td>
                 </tr>

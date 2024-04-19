@@ -63,7 +63,7 @@ export async function fetchUserById(id: string) {
     });
 
     if (!user) {
-      throw new Error('Company not found.');
+      throw new Error('User not found.');
     }
 
     return {
