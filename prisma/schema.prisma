@@ -79,7 +79,7 @@ model Item {
   description String?
   brand       String?
   price       Float?
-  quantity    Int?
+  quantity    Float?
   imageUrl    String?
   userId      String?
   user        User?     @relation("UserToItem", fields: [userId], references: [id], onDelete: Cascade)
