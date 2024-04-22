@@ -1,4 +1,5 @@
 import ArchivedCompaniesTable from '@/app/ui/archived/company-table';
+import ArchivedUsersTable from '@/app/ui/archived/user-table';
 import Search from '@/app/ui/search';
 import { inter } from '@/components/fonts';
 import Pagination from '@/components/pagination';
@@ -39,11 +40,11 @@ export default async function Page({
       <Tabs defaultValue="company" className="w-full mt-4">
         <TabsList className="grid w-full grid-cols-3">
           <TabsTrigger value="company">Companies</TabsTrigger>
-          <TabsTrigger value="password">Password</TabsTrigger>
+          <TabsTrigger value="user">Users</TabsTrigger>
           <TabsTrigger value="password">Password</TabsTrigger>
         </TabsList>
         <div className="mt-4 flex items-center justify-between gap-2 md:mt-8">
-          <Search placeholder="Search Companies..." />
+          <Search placeholder="Search..." />
         </div>
         <TabsContent value="company">
           {/* <Card>
@@ -79,28 +80,18 @@ export default async function Page({
             </div>
           </div>
         </TabsContent>
-        <TabsContent value="password">
-          <Card>
-            <CardHeader>
-              <CardTitle>Password</CardTitle>
-              {/* <CardDescription>
-                Change your password here. After saving, you'll be logged out.
-              </CardDescription> */}
-            </CardHeader>
-            <CardContent className="space-y-2">
-              <div className="space-y-1">
-                <Label htmlFor="current">Current password</Label>
-                <Input id="current" type="password" />
-              </div>
-              <div className="space-y-1">
-                <Label htmlFor="new">New password</Label>
-                <Input id="new" type="password" />
-              </div>
-            </CardContent>
-            <CardFooter>
-              <Button>Save password</Button>
-            </CardFooter>
-          </Card>
+        <TabsContent value="user">
+        <div className="w-full">
+            <Suspense
+              key={query + currentPage}
+              fallback={<CompaniesTableSkeleton />}
+            >
+              <ArchivedUsersTable query={query} currentPage={currentPage}/>
+            </Suspense>
+            <div className="mt-5 flex w-full justify-center">
+              <Pagination totalPages={totalPages} />
+            </div>
+          </div>
         </TabsContent>
       </Tabs>
     </div>
