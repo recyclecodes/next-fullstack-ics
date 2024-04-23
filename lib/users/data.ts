@@ -68,8 +68,10 @@ export async function fetchUserById(id: string) {
 
     return {
       id: user.id,
-      name: user.name,
-      imageUrl: user.imageUrl || null,
+      companyId: user.companyId,
+      name: user.name || '',
+      email: user.email,
+      imageUrl: user.imageUrl || `https://avatar.vercel.sh/acme.png`,
       createdAt: user.createdAt,
     };
   } catch (error) {
