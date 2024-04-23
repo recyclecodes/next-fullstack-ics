@@ -45,14 +45,16 @@ export const itemSchema = z.object({
     .refine((val) => /^\d+(\.\d+)?$/.test(val), {
       message: 'Price must be a valid number',
     })
-    .transform((val) => parseFloat(val)), // Convert the string to a number
+    .transform((val) => parseFloat(val))
+    .optional(), // Convert the string to a number
   quantity: z
     .string()
     .transform((val) => val.trim()) // Optional: trim whitespace from string inputs
     .refine((val) => /^\d+(\.\d+)?$/.test(val), {
       message: 'Price must be a valid number',
     })
-    .transform((val) => parseFloat(val)),
+    .transform((val) => parseFloat(val))
+    .optional(),
   imageUrl: z.string({
     required_error: 'Item image is required',
   }),

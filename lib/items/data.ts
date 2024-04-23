@@ -117,19 +117,22 @@ export async function fetchFilteredArchiveItems(
   }
 }
 
-export async function fetchCompanyById(id: string) {
+export async function fetchItemById(id: string) {
   try {
     const item = await prismadb.item.findUnique({
       where: { id: id },
     });
 
     if (!item) {
-      throw new Error('Company not found.');
+      throw new Error('Item not found.');
     }
 
     return {
       id: item.id,
       name: item.name,
+      description: item.description || undefined,
+      price: item.price || undefined,
+      quantity: item.quantity || undefined,
       imageUrl: item.imageUrl || `https://avatar.vercel.sh/acme.png`,
       createdAt: item.createdAt,
     };

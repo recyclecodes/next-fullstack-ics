@@ -5,7 +5,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 
 import { ItemForms, itemSchema } from '@/lib/zod';
 
-import { createItem } from '@/lib/items/actions';
+import { createItem, updateItem } from '@/lib/items/actions';
 import { useToast } from '@/components/ui/use-toast';
 import {
   Form,
@@ -20,8 +20,11 @@ import { Input } from '@/components/ui/input';
 import Link from 'next/link';
 import LoadingButton from '@/components/LoadingButton';
 
-export default function CreateItemForm() {
-  const form = useForm<ItemForms>({ resolver: zodResolver(itemSchema) });
+export default function UpdateItemForm({ item }: { item: ItemForms }) {
+  const form = useForm<ItemForms>({
+    resolver: zodResolver(itemSchema),
+    defaultValues: item,
+  });
 
   const {
     handleSubmit,
@@ -45,7 +48,7 @@ export default function CreateItemForm() {
     });
 
     try {
-      await createItem(formData);
+      await updateItem(item.id, formData);
       toast({
         variant: 'default',
         description: 'Successfully added new item',
@@ -105,7 +108,7 @@ export default function CreateItemForm() {
                 <FormLabel>Item description</FormLabel>
                 <FormControl>
                   <Input
-                  type='text'
+                    type="text"
                     placeholder="Item description"
                     value={field.value || ''}
                     onChange={field.onChange}

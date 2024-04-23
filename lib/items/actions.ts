@@ -132,9 +132,23 @@ export async function updateItem(
 
 export async function deleteItem(id: string | undefined) {
   try {
-    await prismadb.item.delete({ where: { id } });
+    await prismadb.item.update({ where: { id }, data: { deleted: true } });
   } catch (error) {
     return { message: 'Database Error: Failed to Delete item.' };
   }
   revalidatePath('/items');
 }
+
+export async function restoreItem(id: string | undefined) {
+  try {
+    await prismadb.item.update({
+      where: { id },
+      data: { deleted: false },
+    });
+  } catch (error) {
+    console.error(error);
+    return { message: 'Database Error: Failed to restore item.' };
+  }
+  revalidatePath('/archive');
+}
+
